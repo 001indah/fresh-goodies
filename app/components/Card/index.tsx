@@ -1,9 +1,7 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import UseContext from '@/app/fetch/UseContect';
-import { useState } from 'react';
 import { convertToKg } from '../Calculator';
-
 
 interface Product {
     imageUrl: string;
@@ -23,9 +21,12 @@ const Card: React.FC = () => {
             [productName]: Math.max(0, (prevCountMap[productName] ?? 0) - weight)
         }));
 
+
+        const newPrice = countMap[productName] === 1 ? product.price : (priceMap[productName] ?? 0) - price;
+
         setPriceMap(prevPriceMap => ({
             ...prevPriceMap,
-            [productName]: (prevPriceMap[productName] ?? 0) - price
+            [productName]: newPrice
         }));
     };
 
@@ -34,12 +35,12 @@ const Card: React.FC = () => {
             ...prevCountMap,
             [productName]: prevCountMap[productName] != null ? prevCountMap[productName] + weight : weight
         }));
+
         setPriceMap(prevPriceMap => ({
             ...prevPriceMap,
             [productName]: (prevPriceMap[productName] ?? 0) + price
         }));
     };
-
 
     if (!productList || productList.length === 0) return <div>No Data</div>;
 
@@ -51,14 +52,17 @@ const Card: React.FC = () => {
                         <img src={product.imageUrl} alt={product.name} className='aspect-square top-0 object-cover mix-blend-multiply bg-transparent' />
                     </div>
                     <div className='bottom-0'>
-                        <p className='text-[22px] font-semibold left-0'>${product.price}</p>
+                        <p className='text-[22px] font-semibold left-0'>{`${priceMap[product.name] === 0 ? product.price : (priceMap[product.name] ?? product.price).toFixed(4)}`}</p>
+
                         <p className='text-[16px] left-0'>{product.name}</p>
                         <div className='flex justify-between items-center mt-5'>
-                            <button onClick={() => minHandleClick(product.name, product.weight)} className={`text-[20px] rounded-full w-10 h-10 items-center flex justify-center bg-black text-white ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'hidden'}`}>-</button>
-                            <p className={`text-[16px] ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'text-slate-500'}`}
-                            >{countMap[product.name] !== undefined ? convertToKg(countMap[product.name]) : convertToKg(0)}</p>
-                            <button onClick={() => addHandleClick(product.name, product.weight)} className={`text-[20px] rounded-full w-10 h-10 items-center flex justify-center bg-black text-white ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'border bg-transparent text-black'}`}>+</button>
+                            <button onClick={() => minHandleClick(product.name, product.weight, product.price)} className={`text-[20px] rounded-full w-10 h-10 items-center flex justify-center bg-black text-white ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'hidden'}`}>-</button>
+                            <p className={`text-[16px] ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'text-slate-500'}`}>
+                                {countMap[product.name] !== undefined ? convertToKg(countMap[product.name]) : convertToKg(0)}
+                            </p>
+                            <button onClick={() => addHandleClick(product.name, product.weight, product.price)} className={`text-[20px] rounded-full w-10 h-10 items-center flex justify-center bg-black text-white ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'border bg-transparent text-slate-950'}`}>+</button>
                         </div>
+
                     </div>
                 </div>
             ))}
@@ -66,10 +70,4 @@ const Card: React.FC = () => {
     );
 };
 
-
-
 export default Card;
-
-
-
-
