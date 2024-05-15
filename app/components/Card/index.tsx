@@ -10,13 +10,11 @@ interface Product {
     name: string;
     price: number;
     weight: number;
-
-
 }
 
 const Card: React.FC = () => {
     const { productList } = UseContext();
-    const [countMap, setCountMap] = useState<{ [key: string]: number | null }>({}); // Initialize count with an empty object
+    const [countMap, setCountMap] = useState<{ [key: string]: number | null }>({});
     const [priceMap, setPriceMap] = useState<{ [key: string]: number | null }>({});
 
     const minHandleClick = (productName: string, weight: number, price: number) => {
@@ -47,8 +45,8 @@ const Card: React.FC = () => {
 
     return (
         <div className="grid grid-cols-[1fr,1fr] gap-3 lg:grid-cols-4 mb-3">
-            {productList.map((product: Product) => (
-                <div key={product.name} className='bg-bgCard p-[11px] h-auto rounded-md lg:rounded-lg lg:p-5'>
+            {productList.map((product: Product, index) => (
+                <div key={index} className='bg-bgCard p-[11px] h-auto rounded-md lg:rounded-lg lg:p-5'>
                     <div className='flex justify-center'>
                         <img src={product.imageUrl} alt={product.name} className='aspect-square top-0 object-cover mix-blend-multiply bg-transparent' />
                     </div>
