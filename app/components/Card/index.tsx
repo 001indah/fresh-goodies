@@ -52,7 +52,7 @@ const Card: React.FC = () => {
                         <img src={product.imageUrl} alt={product.name} className='aspect-square top-0 object-cover mix-blend-multiply bg-transparent' />
                     </div>
                     <div className='bottom-0'>
-                        <p className='text-[22px] font-semibold left-0'>{`${priceMap[product.name] === 0 ? product.price : (priceMap[product.name] ?? product.price).toFixed(4)}`}</p>
+                        <p className='text-[22px] font-semibold left-0'>{`${(priceMap[product.name] <= 0.0001) ? product.price : (priceMap[product.name] ?? product.price).toFixed(4)}`}</p>
 
                         <p className='text-[16px] left-0'>{product.name}</p>
                         <div className='flex justify-between items-center mt-5'>
