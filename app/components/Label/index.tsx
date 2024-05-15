@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { calculateTotalPrice } from '../Card';
 
 const Label = () => {
     return (
@@ -7,9 +8,11 @@ const Label = () => {
             <div className='bg-bgCard w-5 h-5 z-30 rounded-full flex justify-center items-center'>
                 <img src="products/cucumber.png" alt="" className='w-4 object-cover mix-blend-multiply bg-transparent' />
             </div>
-            <p className='text-[16px] rounded-[43px] h-10 items-center flex justify-center bg-black text-white'>$27.3</p>
+            <p className='text-[16px] rounded-[43px] h-10 items-center flex justify-center bg-black text-white'>Total Price: $</p>
         </div>
     )
 }
 
-export default Label
+export default Label;
+
+

@@ -10,7 +10,7 @@ const CardList = () => {
                 <Card />
 
             </div>
-            <Label />
+            {/* <Label /> */}
         </div>
 
     )
