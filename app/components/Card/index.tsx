@@ -98,9 +98,9 @@ const Card: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <div className='flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center'>
-                <p className='text-[16px] h-10 items-center flex justify-center bg-black text-white'>Cart</p>
-                <div className='bg-bgCard w-5 h-5 z-30 rounded-full flex justify-center items-center'>
+            <div className='fixed bottom-10 left-4 right-4  w-auto flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center'>
+                <p className='text-[16px] h-12 items-center flex justify-center text-white'>Cart</p>
+                <div className='w-5 h-5 z-30 rounded-full flex justify-center items-center'>
                     <div className=' flex justify-center items-center'>
                         {getFirstFiveProducts().map((product, index) => (
                             <img key={index} src={product.imageUrl} alt={product.name} className='bg-bgCard w-5 h-5 z-30 rounded-full object-cover mix-blend-multiply' />
@@ -109,6 +109,7 @@ const Card: React.FC = () => {
                 </div>
                 <p className='text-[16px] rounded-[43px] h-10 items-center flex justify-center bg-black text-white'>Total Price: ${calculateTotalPrice().toFixed(4)}</p>
             </div>
+
         </div>
     );
 };
