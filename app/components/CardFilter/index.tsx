@@ -92,6 +92,12 @@ export default function Home() {
         return allProduct;
     }
 
+    const [bottom, setBottom] = useState(false);
+
+    const handleBottomOnClick = () => {
+        setBottom(!bottom);
+    };
+
 
     if (!products || products.length === 0) return <div>No Data</div>;
 
@@ -129,13 +135,19 @@ export default function Home() {
         </div>
     ));
 
+    //buat muncul nenggelemin card
+
+
+
+
+
     return (
         <div className="p-3">
 
-            <div className='lg:grid lg:grid-cols-[5fr,2fr] gap-5 my-5 w-full'>
+            <div className='lg:grid lg:grid-cols-[5fr,2fr] gap-5 my-5 w-full overflow-hidden'>
                 <main >
                     {/* sort start */}
-                    <div className="overflow-x-hidden">
+                    <div className="hover:overflow-x-auto pb-2">
                         <div className="flex gap-2">
                             <div onClick={() => setActiveCategory("")} className="px-4 text-nowrap">
                                 <a href="#" className={activeCategory === "" ? "border-b-2 border-black" : ""}>All</a>
@@ -180,7 +192,7 @@ export default function Home() {
                     )}
                 </main>
                 {/* footer start */}
-                <div className=' lg:hidden fixed bottom-10 left-4 right-4  w-auto flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center shadow-md'>
+                <div onClick={handleBottomOnClick} className=' lg:hidden fixed bottom-10 left-4 right-4  w-auto flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center shadow-md'>
                     <p className='text-[16px] h-12 items-center flex justify-center text-white'>Cart</p>
                     <div className='w-6 h-6 z-30 rounded-full flex justify-center items-center'>
                         <div className=' flex justify-center items-center'>
@@ -193,8 +205,15 @@ export default function Home() {
                 </div>
                 {/* footer end */}
                 {/* resume start */}
-                <div className='border rounded-xl p-4'>
-                    <img src="car.svg" alt="car" className='h-5 flex justify-start' />
+                {/* fixed top-5 right-2 left-2 */}
+                <div className={`border rounded-xl p-4 h-screen bg-white ${bottom ? "fixed top-5 right-2 left-2" : "hidden sm:block"}`}>
+
+                    <div className="flex justify-between">
+                        <img src="car.svg" alt="car" className='h-5 flex justify-start' />
+                        <button onClick={handleBottomOnClick} className="lg:hidden">
+                            <p className="flex font-bold bg-black text-white rounded-full text-center items-center p-3 m-2 w-8 h-8">x</p>
+                        </button>
+                    </div>
                     <p className='text-[16px]'>Before Free Shipping: <span className='font-bold mx-1'>${convertToDollar(calculateTotalPrice().toFixed(4))}</span></p>
                     <div className="bg-gray-200 h-2.5 rounded-full mb-5" style={{ width: '100%' }}>
                         <div className={`bg-gradient-to-r h-full rounded-full ${convertToDollar((calculateTotalPrice() / 0.15).toFixed(4)) > 100 ? 'bg-red-500' : ' from-blueGreen to-blue-300'}`} style={{ width: `${convertToDollar((calculateTotalPrice() / 0.15).toFixed(4)) > 100 ? 100 : convertToDollar((calculateTotalPrice() / 0.15).toFixed(4))}%` }}></div>
@@ -222,6 +241,6 @@ export default function Home() {
                     ))}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
