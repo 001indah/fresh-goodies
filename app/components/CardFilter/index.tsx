@@ -206,7 +206,7 @@ export default function Home() {
                 {/* footer end */}
                 {/* resume start */}
                 {/* fixed top-5 right-2 left-2 */}
-                <div className={`border rounded-xl p-4 h-screen bg-white ${bottom ? "fixed top-5 right-2 left-2" : "hidden sm:block"}`}>
+                <div className={`border rounded-xl p-4 h-screen lg:h-auto bg-white ${bottom ? "fixed top-5 right-2 left-2" : "hidden sm:block"}`}>
 
                     <div className="flex justify-between">
                         <img src="car.svg" alt="car" className='h-5 flex justify-start' />
