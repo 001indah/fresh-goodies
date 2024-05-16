@@ -1,5 +1,4 @@
 import React from 'react';
-import { calculateTotalPrice } from '../Card';
 
 const Label = () => {
     return (
