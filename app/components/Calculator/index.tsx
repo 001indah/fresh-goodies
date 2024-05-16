@@ -5,6 +5,10 @@ export const convertToKg = (weight: number): string => {
     return `${weight} gr`;
 };
 
+export const convertToDollar = (price: number): string => {
+    return `${(price * 1000).toFixed(2)}`;
+};
+
 // className = `{text-[16px] ${countMap[product.name] == undefined && "text-slate-500"}}`
 
 

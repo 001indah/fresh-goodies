@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import UseContext from '@/app/fetch/UseContect';
-import { convertToKg } from '../Calculator';
+import { convertToDollar, convertToKg } from '../Calculator';
 
 interface Product {
     imageUrl: string;
@@ -84,7 +84,6 @@ const Card: React.FC = () => {
     }
 
 
-
     if (!productList || productList.length === 0) return <div>No Data</div>;
 
     return (
@@ -97,7 +96,9 @@ const Card: React.FC = () => {
                             <img src={product.imageUrl} alt={product.name} className='w-full aspect-square top-0 object-cover mix-blend-multiply bg-transparent' />
                         </div>
                         <div className='bottom-0'>
-                            <p className='text-[22px] font-semibold left-0'>${`${(priceMap[product.name] <= 0.0001) ? product.price : (priceMap[product.name] ?? product.price).toFixed(4)}`}</p>
+                            {/* show price update */}
+
+                            <p className='text-[22px] font-semibold left-0'>${`${(product.weight * ((priceMap[product.name] <= 0.0001) ? product.price : (priceMap[product.name] ?? product.price))).toFixed(2)}`}</p>
 
                             <p className='text-[16px] left-0'>{product.name}</p>
                             <div className='flex justify-between items-center mt-5'>
@@ -112,6 +113,7 @@ const Card: React.FC = () => {
                     </div>
                 ))}
             </div>
+
             <div className=' lg:hidden fixed bottom-10 left-4 right-4  w-auto flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center shadow-md'>
                 <p className='text-[16px] h-12 items-center flex justify-center text-white'>Cart</p>
                 <div className='w-6 h-6 z-30 rounded-full flex justify-center items-center'>
@@ -121,20 +123,23 @@ const Card: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <p className='text-[16px] rounded-[43px] h-10 items-center flex justify-center bg-black text-white'>Total Price: ${calculateTotalPrice().toFixed(4)}</p>
+                <p className='text-[16px] rounded-[43px] h-10 items-center flex justify-center bg-black text-white'>Total Price: ${convertToDollar(calculateTotalPrice().toFixed(4))}</p>
             </div>
             <div className='border rounded-xl p-4'>
                 <img src="car.svg" alt="car" className='h-5 flex justify-start' />
-                <p className='text-[16px]'>Before Free Shipping: <span className='font-bold mx-1'>${calculateTotalPrice().toFixed(4)}</span></p>
+                <p className='text-[16px]'>Before Free Shipping: <span className='font-bold mx-1'>${convertToDollar(calculateTotalPrice().toFixed(4))}</span></p>
                 <div className="bg-gray-200 h-2.5 rounded-full mb-5" style={{ width: '100%' }}>
-                    <div className="bg-gradient-to-r from-blueGreen to-blue-300 h-full rounded-full" style={{ width: '45%' }}></div>
+                    <div className={`bg-gradient-to-r h-full rounded-full ${convertToDollar((calculateTotalPrice() / 0.15).toFixed(4)) > 100 ? 'bg-red-500' : ' from-blueGreen to-blue-300'}`} style={{ width: `${convertToDollar((calculateTotalPrice() / 0.15).toFixed(4)) > 100 ? 100 : convertToDollar((calculateTotalPrice() / 0.15).toFixed(4))}%` }}></div>
                 </div>
+
                 {getAllProduct().map((product, index) => (
                     <div key={index} className='grid grid-cols-[3fr,4fr]'>
                         <img src={product.imageUrl} alt={product.name} />
                         <div>
                             <p className='text-[16px] font-bold'>{product.name}</p>
-                            <p className='text-[16px]'>${product.price}</p>
+                            <p className='text-[16px]'>
+                                ${`${(product.weight * ((priceMap[product.name] <= 0.0001) ? product.price : (priceMap[product.name] ?? product.price))).toFixed(2)}`}
+                            </p>
                             {/* button start */}
                             <div className='flex justify-between items-center mt-5'>
                                 <button onClick={() => minHandleClick(product.name, product.weight, product.price)} className={`text-[20px] rounded-full w-7 h-7 items-center flex justify-center bg-slate-300 text-black ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'hidden'}`}>-</button>

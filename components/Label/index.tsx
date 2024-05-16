@@ -1,30 +1,33 @@
-import React from 'react'
-
-const Label = () => {
-    return (
-        <div className='w-full overflow-hidden'>
-            <ul className='text-[18px] gap-7 flex p-4'>
-                <li>
-                    <a href="#">All</a>
-                </li>
-                <li>
-                    <a href="#">Spicy</a>
-                </li>
-                <li>
-                    <a href="#">Dressings</a>
-                </li>
-                <li>
-                    <a href="#">Sweet</a>
-                </li>
-                <li>
-                    <a href="#">Roots</a>
-                </li>
+import React from 'react';
 
 
-            </ul>
-
-        </div>
-    )
+interface NavbarProps {
+    categories: string[];
+    setActiveCategory: (category: string) => void;
 }
 
-export default Label
+const Navbar: React.FC<NavbarProps> = ({ categories, setActiveCategory }) => {
+    return (
+        <nav className="p-4">
+            <ul className="flex space-x-4">
+                <li
+                    className="cursor-pointer"
+                    onClick={() => setActiveCategory('All')}
+                >
+                    All
+                </li>
+                {categories.map(category => (
+                    <li
+                        key={category}
+                        className="cursor-pointer"
+                        onClick={() => setActiveCategory(category)}
+                    >
+                        {category}
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+};
+
+export default Navbar;
