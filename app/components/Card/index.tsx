@@ -54,6 +54,7 @@ const Card: React.FC = () => {
         return totalPrice;
     };
 
+    //show product bought
     const getBoughtProducts = (): string[] => {
         return Object.keys(countMap).filter(productName => countMap[productName] && countMap[productName] > 0);
     };
@@ -69,16 +70,29 @@ const Card: React.FC = () => {
         }
         return firstFiveProducts;
     };
+    const getAllProduct = (): Product[] => {
+        const allBoughtProduct = getBoughtProducts();
+        const allProduct: Product[] = [];
+        for (let i = 0; i < allBoughtProduct.length; i++) {
+            const productName = allBoughtProduct[i];
+            const product = productList.find(product => product.name === productName);
+            if (product) {
+                allProduct.push(product);
+            }
+        }
+        return allProduct;
+    }
+
 
 
     if (!productList || productList.length === 0) return <div>No Data</div>;
 
     return (
-        <div>
+        <div className='lg:grid lg:grid-cols-[5fr,2fr] gap-5'>
 
             <div className="grid grid-cols-[1fr,1fr] gap-3 lg:grid-cols-4 mb-[100px]">
                 {productList.map((product: Product, index) => (
-                    <div key={index} className='bg-bgCard p-[11px] h-auto rounded-md lg:rounded-lg lg:p-5'>
+                    <div key={index} className='bg-bgCard p-[11px] h-auto rounded-xl lg:rounded-2xl lg:p-5'>
                         <div className='flex justify-center'>
                             <img src={product.imageUrl} alt={product.name} className='w-full aspect-square top-0 object-cover mix-blend-multiply bg-transparent' />
                         </div>
@@ -98,7 +112,7 @@ const Card: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <div className='fixed bottom-10 left-4 right-4  w-auto flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center shadow-md'>
+            <div className=' lg:hidden fixed bottom-10 left-4 right-4  w-auto flex bg-black rounded-[43px] px-4 gap-4 justify-between items-center shadow-md'>
                 <p className='text-[16px] h-12 items-center flex justify-center text-white'>Cart</p>
                 <div className='w-6 h-6 z-30 rounded-full flex justify-center items-center'>
                     <div className=' flex justify-center items-center'>
@@ -108,6 +122,31 @@ const Card: React.FC = () => {
                     </div>
                 </div>
                 <p className='text-[16px] rounded-[43px] h-10 items-center flex justify-center bg-black text-white'>Total Price: ${calculateTotalPrice().toFixed(4)}</p>
+            </div>
+            <div className='border rounded-xl p-4'>
+                <img src="car.svg" alt="car" className='h-5 flex justify-start' />
+                <p className='text-[16px]'>Before Free Shipping: <span className='font-bold mx-1'>${calculateTotalPrice().toFixed(4)}</span></p>
+                <div className="bg-gray-200 h-2.5 rounded-full mb-5" style={{ width: '100%' }}>
+                    <div className="bg-gradient-to-r from-blueGreen to-blue-300 h-full rounded-full" style={{ width: '45%' }}></div>
+                </div>
+                {getAllProduct().map((product, index) => (
+                    <div key={index} className='grid grid-cols-[3fr,4fr]'>
+                        <img src={product.imageUrl} alt={product.name} />
+                        <div>
+                            <p className='text-[16px] font-bold'>{product.name}</p>
+                            <p className='text-[16px]'>${product.price}</p>
+                            {/* button start */}
+                            <div className='flex justify-between items-center mt-5'>
+                                <button onClick={() => minHandleClick(product.name, product.weight, product.price)} className={`text-[20px] rounded-full w-7 h-7 items-center flex justify-center bg-slate-300 text-black ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'hidden'}`}>-</button>
+                                <p className={`text-[16px] ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'text-slate-500'}`}>
+                                    {countMap[product.name] !== undefined ? convertToKg(countMap[product.name]) : convertToKg(0)}
+                                </p>
+                                <button onClick={() => addHandleClick(product.name, product.weight, product.price, product.imageUrl)} className={`text-[20px] text-black bg-slate-300 rounded-full w-7 h-7 items-center flex justify-center ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'border border-slate-300 bg-transparent text-black'}`}>+</button>
+                            </div>
+                            {/* button end */}
+                        </div>
+                    </div>
+                ))}
             </div>
 
         </div>
