@@ -24,12 +24,11 @@ export default function Home() {
     const [countMap, setCountMap] = useState<{ [key: string]: number | null }>({});
     const [priceMap, setPriceMap] = useState<{ [key: string]: number | null }>({});
 
-    const minHandleClick = (productName: string, weight: number, price: number) => {
+    const minHandleClick = (productName: string, weight: number, price: number, increment: number) => {
         setCountMap(prevCountMap => ({
             ...prevCountMap,
             [productName]: Math.max(0, (prevCountMap[productName] ?? 0) - weight)
         }));
-
 
         const newPrice = countMap[productName] === 1 ? price : (priceMap[productName] ?? 0) - price;
 
@@ -39,7 +38,7 @@ export default function Home() {
         }));
     };
 
-    const addHandleClick = (productName: string, weight: number, price: number, imageUrl: string) => {
+    const addHandleClick = (productName: string, weight: number, price: number, imageUrl: string, increment: number) => {
         setCountMap(prevCountMap => ({
             ...prevCountMap,
             [productName]: prevCountMap[productName] != null ? prevCountMap[productName] + weight : weight
@@ -135,12 +134,9 @@ export default function Home() {
         </div>
     ));
 
+
+
     //buat muncul nenggelemin card
-
-
-
-
-
     return (
         <div className="p-3">
 
@@ -150,11 +146,11 @@ export default function Home() {
                     <div className="hover:overflow-x-auto pb-2">
                         <div className="flex gap-2">
                             <div onClick={() => setActiveCategory("")} className="px-4 text-nowrap">
-                                <a href="#" className={activeCategory === "" ? "border-b-2 border-black" : ""}>All</a>
+                                <a href="#" className={activeCategory === "" ? "border-b-4 border-black font-bold" : ""}>All</a>
                             </div>
                             {categories.map((item, index) => (
                                 <div onClick={() => setActiveCategory(item)} className="px-4 text-nowrap" key={index}>
-                                    <a href="#" className={activeCategory === item ? "border-b-2 border-black" : ""}>{item}</a>
+                                    <a href="#" className={activeCategory === item ? "border-b-4 border-black font-bold" : ""}>{item}</a>
                                 </div>
                             ))}
                         </div>
@@ -219,26 +215,28 @@ export default function Home() {
                         <div className={`bg-gradient-to-r h-full rounded-full ${convertToDollar((calculateTotalPrice() / 0.15).toFixed(4)) > 100 ? 'bg-red-500' : ' from-blueGreen to-blue-300'}`} style={{ width: `${convertToDollar((calculateTotalPrice() / 0.15).toFixed(4)) > 100 ? 100 : convertToDollar((calculateTotalPrice() / 0.15).toFixed(4))}%` }}></div>
                     </div>
 
-                    {getAllProduct().map((product, index) => (
-                        <div key={index} className='grid grid-cols-[3fr,4fr]'>
-                            <img src={product.imageUrl} alt={product.name} />
-                            <div>
-                                <p className='text-[16px] font-bold'>{product.name}</p>
-                                <p className='text-[16px]'>
-                                    ${`${(product.weight * ((priceMap[product.name] <= 0.0001) ? product.price : (priceMap[product.name] ?? product.price))).toFixed(2)}`}
-                                </p>
-                                {/* button start */}
-                                <div className='flex justify-between items-center mt-5'>
-                                    <button onClick={() => minHandleClick(product.name, product.weight, product.price)} className={`text-[20px] rounded-full w-7 h-7 items-center flex justify-center bg-slate-300 text-black ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'hidden'}`}>-</button>
-                                    <p className={`text-[16px] ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'text-slate-500'}`}>
-                                        {countMap[product.name] !== undefined ? convertToKg(countMap[product.name]) : convertToKg(0)}
+                    <div className=" overflow-y-scroll">
+                        {getAllProduct().map((product, index) => (
+                            <div key={index} className='grid grid-cols-[3fr,4fr]'>
+                                <img src={product.imageUrl} alt={product.name} />
+                                <div>
+                                    <p className='text-[16px] font-bold'>{product.name}</p>
+                                    <p className='text-[16px]'>
+                                        ${`${(product.weight * ((priceMap[product.name] <= 0.0001) ? product.price : (priceMap[product.name] ?? product.price))).toFixed(2)}`}
                                     </p>
-                                    <button onClick={() => addHandleClick(product.name, product.weight, product.price, product.imageUrl)} className={`text-[20px] text-black bg-slate-300 rounded-full w-7 h-7 items-center flex justify-center ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'border border-slate-300 bg-transparent text-black'}`}>+</button>
+                                    {/* button start */}
+                                    <div className='flex justify-between items-center mt-5'>
+                                        <button onClick={() => minHandleClick(product.name, product.weight, product.price)} className={`text-[20px] rounded-full w-7 h-7 items-center flex justify-center bg-slate-300 text-black ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? '' : 'hidden'}`}>-</button>
+                                        <p className={`text-[16px] ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'text-slate-500'}`}>
+                                            {countMap[product.name] !== undefined ? convertToKg(countMap[product.name]) : convertToKg(0)}
+                                        </p>
+                                        <button onClick={() => addHandleClick(product.name, product.weight, product.price, product.imageUrl)} className={`text-[20px] text-black bg-slate-300 rounded-full w-7 h-7 items-center flex justify-center ease-in-out duration-200 ${countMap[product.name] !== undefined && countMap[product.name] > 0 ? 'text-black' : 'border border-slate-300 bg-transparent text-black'}`}>+</button>
+                                    </div>
+                                    {/* button end */}
                                 </div>
-                                {/* button end */}
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </div >
